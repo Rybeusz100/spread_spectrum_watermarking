@@ -538,8 +538,7 @@ impl Reader {
         );
     }
 
-    /// Extract a watermark into the slice. Panics if the size of extracted exceeds coefficients or
-    /// if the derived_coefficients length doesn't match the base_coefficients.
+    /// Extract a watermark into the slice.
     fn extract_watermark(
         base_coefficients: &[f32],
         indices: &[usize],
@@ -547,11 +546,10 @@ impl Reader {
         derived_coefficients: &[f32],
         extracted: &mut [f32],
     ) {
-        if derived_coefficients.len() != base_coefficients.len() {
-            panic!("Derived coefficient length not equal to base coefficient length.");
-        }
-        if extracted.len() >= base_coefficients.len() {
-            panic!("Desired extraction length exceeds available coefficients.");
+        if derived_coefficients.len() != base_coefficients.len()
+            || extracted.len() >= base_coefficients.len()
+        {
+            return;
         }
         for i in 0..extracted.len() {
             let coefficient_index = indices[i];
